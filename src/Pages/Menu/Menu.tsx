@@ -1,7 +1,14 @@
+import Heading from '../../components/Heading/Heading';
+import Search from '../../components/Search/Search';
+import styles from './Menu.module.css';
+
 export function Menu() {
 	return (
 		<>
-			<h1>Menu</h1>
+			<div className={styles['head']}>
+				<Heading>Меню</Heading>
+				<Search placeholder="Введите блюдо или состав" />
+			</div>
 		</>
 	);
 }
