@@ -2,16 +2,23 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import styles from '../layout/Layout.module.css';
 import Button from '../components/Button/Button';
 import cn from 'classnames';
-import { useDispatch } from 'react-redux';
-import { userActions } from '../store/user.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProfile, userActions } from '../store/user.slice';
+import { useEffect } from 'react';
+import { AppDispatch, RootState } from '../store/store';
 
 export function Layout() {
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
+	const { profile } = useSelector((s: RootState) => s.user);
 	const logout = () => {
 		dispatch(userActions.logout());
 		navigate('/auth/login');
 	};
+
+	useEffect(() => {
+		dispatch(getProfile());
+	}, [dispatch]);
 
 	return (
 		<div className={styles['layout']}>
@@ -22,8 +29,8 @@ export function Layout() {
 						src="/avatar.png"
 						alt="Аватар пользователя"
 					/>
-					<div className={styles['name']}>Egor Maximov</div>
-					<div className={styles['email']}>egor_maximov@vk.com</div>
+					<div className={styles['name']}>{profile?.name}</div>
+					<div className={styles['email']}>{profile?.email}</div>
 				</div>
 				<div className={styles['menu']}>
 					<NavLink
